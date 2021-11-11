@@ -3,7 +3,6 @@ on: push
 branches:
   - main
   - api-features/**
-  - dependabot/**
   pull_request:
     branches:
       - main
