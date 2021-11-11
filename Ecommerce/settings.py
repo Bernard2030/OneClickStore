@@ -78,10 +78,13 @@ WSGI_APPLICATION = 'Ecommerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postproduct',
+        'USER': 'moringa',
+        'PASSWORD': 'Access',
     }
 }
+
 
 
 # Password validation
@@ -115,6 +118,21 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+from datetime import timedelta
+SIMPLE_JWT = {
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
+    'ROTATE_REFRESH_TOKENS': True,
+}
 
 
 # Static files (CSS, JavaScript, Images)
