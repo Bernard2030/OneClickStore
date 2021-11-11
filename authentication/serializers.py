@@ -22,7 +22,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token 
 
 
-class RegistrationSerializer(serializers.ModelSerializer):
+class RegisterSerializer(serializers.ModelSerializer):
     """
     Serializer for user registration
     """
