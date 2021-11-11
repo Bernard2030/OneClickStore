@@ -2,7 +2,8 @@ name: Docker Compose Actions Workflow
 on: push
 branches:
   - main
-  - api-features/**
+  - api-features
+  - dependabot
   pull_request:
     branches:
       - main
