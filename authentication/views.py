@@ -30,7 +30,25 @@ try:
     print(response.status_code)
 
 except Exception as e:
-    print(e.message)    
+    print(e) 
+     
+
+# sending of sms messages
+import africastalking
+
+
+username = "YOUR_USERNAME"
+api_key = "YOUR_API_KEY" 
+
+africastalking.initialize(username, api_key)
+
+
+# initialize SMS service
+sms = africastalking.SMS
+
+
+# response = sms.send("Hello world", ["+254791176810"])
+# print(response)
 
 
 
