@@ -171,8 +171,6 @@ cloudinary.config(
     api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
 )
 
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
