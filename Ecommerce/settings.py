@@ -44,16 +44,20 @@ INSTALLED_APPS = [
     'authentication',
     'products',
     'cloudinary',
+    "corsheaders",
+    'bootstrap5'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'Ecommerce.urls'
@@ -108,6 +112,13 @@ if MODE == "dev":
             'PORT': f'{os.environ.get("POSTGRES_DB_PORT")}',
         }
     }
+    CORS_ALLOWED_ORIGINS = [
+        'http://localhost:8000',
+        'http://localhost:8081',
+        *os.environ.get('CORS_ALLOWED_ORIGINS', default='').split(',')
+    ]
+    CORS_ALLOW_ALL_ORIGINS = True
+
     # ALLOWED_HOSTS = []
 # production
 else:
@@ -115,6 +126,15 @@ else:
     DATABASES = {
         'default': dj_database_url.config(default=os.environ.get("DATABASE_URL"))
     }
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:8080",
+        "http://127.0.0.1:9000",
+    ]
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://\w+\.herokuapp\.com$",
+    ]
+    CORS_URLS_REGEX = r"^/api/.*$"
+
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
