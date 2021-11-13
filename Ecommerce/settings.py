@@ -100,6 +100,7 @@ if os.getenv('GITHUB_WORKFLOW'):
             'PORT': '5432'
         }
     }
+    CORS_ALLOW_ALL_ORIGINS = True
 # development
 if MODE == "dev":
     DATABASES = {
