@@ -115,3 +115,78 @@ class UserProfileTests(TestCase):
         user_profile = UserProfile.objects.get(user=self.user)
         self.assertEquals(user_profile.user, self.user)
 
+
+class UserRatingTests(TestCase):
+    """
+    Tests of user rating model
+    """
+
+    def setUp(self):
+        self.user = User(id=1, username='zoo', password='testpwsd123')
+        self.user.save()
+        self.user_2 = User(id=2, username='zoo2', password='testpwsd123')
+        self.user_2.save()
+        self.rating = UserRating(id=1, rating=5, user=self.user)
+        self.rating.save()
+        self.rating_2 = UserRating(id=2, rating=4, user=self.user_2)
+        self.rating_2.save()
+
+    def tearDown(self):
+        self.user = None
+        self.user_2 = None
+        self.rating = None
+        self.rating_2 = None
+
+    def test_instance(self):
+        self.assertTrue(isinstance(self.rating, UserRating))
+
+    def test_save_rating(self):
+        self.rating.save()
+
+    def test_delete_rating(self):
+        self.rating.delete()
+
+    def test_update_rating(self):
+        self.rating.rating = 3
+        self.rating.save()
+        self.assertEquals(self.rating.rating, 3)
+
+    def test_get_rating(self):
+        self.rating.rating = 5
+        self.rating.save()
+        rating = UserRating.objects.get(id=1)
+        self.assertEquals(rating.rating, 5)
+
+    def test_get_all_ratings(self):
+        self.rating.rating = 5
+        self.rating_2.rating = 2
+        self.rating.save()
+        self.rating_2.save()
+        ratings = UserRating.objects.all()
+        self.assertEquals(len(ratings), 2)
+
+    def test_get_all_ratings_by_id(self):
+        self.rating.rating = 5
+        self.rating.save()
+        ratings = UserRating.objects.all()
+        self.assertEquals(ratings[0].id, 2)
+
+    def test_get_all_ratings_by_rating(self):
+        self.rating.rating = 5
+        self.rating.save()
+        ratings = UserRating.objects.all()
+        self.assertEquals(ratings[1].rating, 5)
+
+    def test_get_all_ratings_by_user(self):
+        self.rating.rating = 3
+        self.rating.save()
+        ratings = UserRating.objects.all()
+        self.assertEquals(ratings[1].user, self.user)
+
+    def test_get_user_rating(self):
+        self.rating.rating = 3
+        self.rating.save()
+        user_rating = UserRating.objects.get(user=self.user)
+        self.assertEquals(user_rating.rating, 3)
+
+
