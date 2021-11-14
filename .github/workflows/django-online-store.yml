@@ -73,14 +73,17 @@ jobs:
         export DATABASE_URL=postgres://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
         export SECRET_KEY=test-secret-key
         export DEBUG=1
+    - name: Run migrations
+      run: |
+        export DATABASE_URL=postgres://${{ matrix.database-user }}:${{ matrix.database-password }}@${{ matrix.database-host }}:${{ matrix.database-port }}/${{ matrix.database-name }}
+        export SECRET_KEY=test-secret-key
+        export DEBUG=1
         export ALLOWED_HOSTS=localhost
         export STRIPE_LIVE_SECRET_KEY=sk_live_51HXxqQqQXqQXqQXqQXqQXqQXqQXqQXqQXq
         export STRIPE_TEST_SECRET_KEY=sk_test_51HXxqQqQXqQXqQXqQXqQXqQXqQXqQXqQXq
         export GITHUB_WORKFLOW=True
         export MODE=workflow
-    - name: Run migrations
-      run: |
-          python manage.py migrate
+        python manage.py migrate
     - name: Run tests
       run: |
           python manage.py test
