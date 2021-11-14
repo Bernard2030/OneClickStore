@@ -78,8 +78,12 @@ jobs:
         export STRIPE_TEST_SECRET_KEY=sk_test_51HXxqQqQXqQXqQXqQXqQXqQXqQXqQXqQXq
         export GITHUB_WORKFLOW=True
         export MODE=workflow
-        python manage.py migrate
-        python manage.py test
+    - name: Run migrations
+      run: |
+          python manage.py migrate
+    - name: Run tests
+      run: |
+          python manage.py test
 
 
 
