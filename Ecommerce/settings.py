@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'Ecommerce.wsgi.application'
 MODE = os.environ.get('MODE', default="dev")
 DEBUG = os.environ.get('DEBUG', default=True)
 # GitHub Workflow settings
-if os.getenv('GITHUB_WORKFLOW'):
+if os.environ.get('GITHUB_WORKFLOW'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
