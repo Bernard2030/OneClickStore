@@ -18,7 +18,7 @@ RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev
 
 #  cryptography install
-RUN apk add libffi-dev libssl-dev openssl-dev cargo
+RUN apk add libffi-dev openssl-dev cargo
 
 # install dependencies
 RUN pip install --upgrade pip

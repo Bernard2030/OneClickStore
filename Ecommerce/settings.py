@@ -88,8 +88,9 @@ WSGI_APPLICATION = 'Ecommerce.wsgi.application'
 
 MODE = os.environ.get('MODE', default="dev")
 DEBUG = os.environ.get('DEBUG', default=True)
+
 # GitHub Workflow settings
-if os.environ.get('GITHUB_WORKFLOW'):
+if os.environ.get('GITHUB_WORKFLOW') == 'True':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -113,11 +114,13 @@ if MODE == "dev":
             'PORT': f'{os.environ.get("POSTGRES_DB_PORT")}',
         }
     }
-    CORS_ALLOWED_ORIGINS = [
-        'http://localhost:8000',
-        'http://localhost:8081',
-        *os.environ.get('CORS_ALLOWED_ORIGINS', default='').split(',')
-    ]
+
+    # CORS_ALLOWED_ORIGINS = [
+    # 'http://localhost:8000',
+    # 'http://localhost:8081',
+    # *os.environ.get('CORS_ALLOWED_ORIGINS', default='').split(',')
+    # ]
+
     CORS_ALLOW_ALL_ORIGINS = True
 
     # ALLOWED_HOSTS = []
