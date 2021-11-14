@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'products',
     'cloudinary',
     "corsheaders",
-    'bootstrap5'
+    'bootstrap5',
+    "djstripe",
 ]
 
 MIDDLEWARE = [
@@ -175,6 +176,17 @@ USE_L10N = True
 USE_TZ = True
 
 REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
+
+# Stripe settings
+# STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "<your secret key>")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "<your secret key>")
+STRIPE_LIVE_MODE = False  # Change to True in production
+DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"  # Get it from the section in the Stripe dashboard where you added the webhook
+# endpoint
+DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+# DJSTRIPE_CUSTOMER_MODEL = "users.User"
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
