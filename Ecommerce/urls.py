@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('products.urls')),
     # path('auth/', include('authentication.urls')),
+    path("stripe/", include("djstripe.urls", namespace="djstripe")),
 ]
