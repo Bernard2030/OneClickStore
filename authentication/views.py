@@ -10,7 +10,6 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-<<<<<<< HEAD
 # sendgrid imports
 import os
 from sendgrid import SendGridAPIClient
@@ -56,8 +55,6 @@ sms = africastalking.SMS
 
 
 
-=======
->>>>>>> 69a888a078d0ea022ce04b1eef6354ac27c2f909
 # Create your views here.
 
 class MyObtainTokenPairView(TokenObtainPairView):
