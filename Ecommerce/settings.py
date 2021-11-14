@@ -92,12 +92,12 @@ DEBUG = os.environ.get('DEBUG', default=True)
 if os.environ.get('GITHUB_WORKFLOW'):
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'github-actions',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
-            'HOST': 'localhost',
-            'PORT': '5432'
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': f'{os.environ.get("POSTGRES_DB_NAME")}',
+            'USER': f'{os.environ.get("POSTGRES_USER")}',
+            'PASSWORD': f'{os.environ.get("POSTGRES_PASSWORD")}',
+            'HOST': f'{os.environ.get("POSTGRES_DB_HOST")}',
+            'PORT': f'{os.environ.get("POSTGRES_DB_PORT")}',
         }
     }
     CORS_ALLOW_ALL_ORIGINS = True
