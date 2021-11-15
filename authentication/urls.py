@@ -16,12 +16,10 @@ urlpatterns = [
     path('update_profile/', UpdateProfileView.as_view(), name='update_profile'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-<<<<<<< HEAD
 
   
     
     
-=======
     path('dj-rest-auth/facebook/', FacebookLogin.as_view(), name='fb_login'),
     path('dj-rest-auth/twitter/', TwitterLogin.as_view(), name='twitter_login'),
     path(
@@ -34,5 +32,4 @@ urlpatterns = [
         SocialAccountDisconnectView.as_view(),
         name='social_account_disconnect'
     )
->>>>>>> 4590ca4db4282e5b9d613f3c58f7ccc037cb8fc9
 ]

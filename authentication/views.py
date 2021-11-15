@@ -101,9 +101,7 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-<<<<<<< HEAD
 
-=======
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
 
@@ -111,4 +109,3 @@ class FacebookLogin(SocialLoginView):
 class TwitterLogin(SocialLoginView):
     serializer_class = TwitterLoginSerializer
     adapter_class = TwitterOAuthAdapter
->>>>>>> 4590ca4db4282e5b9d613f3c58f7ccc037cb8fc9
