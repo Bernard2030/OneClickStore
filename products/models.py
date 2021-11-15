@@ -105,15 +105,6 @@ class UserRating(models.Model):
     rating = models.FloatField(choices=rating, default=0, blank=True)
     total_rating = models.FloatField(default=0, blank=True)
 
-    @receiver(post_save, sender=UserProfile)
-    def update_total_score(sender, instance, created, **kwargs):
-        if created:
-            total_rating = UserRating.objects.filter(user=instance.user).aggregate(Sum('rating'))
-            instance.total_rating = total_rating['rating__sum']
-            print(instance.total_rating)
-            instance.total_rating = round(instance.total_rating, 2)
-            instance.save()
-
     def __str__(self):
         return f'{self.user.username}: rating'
 
