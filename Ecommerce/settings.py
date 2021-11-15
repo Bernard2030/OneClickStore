@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'authentication',
     'products',
-    'mpesa_api'
+   
 ]
 
 MIDDLEWARE = [

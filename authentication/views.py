@@ -93,3 +93,23 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
+# mpesa_api views
+
+from django.http import HttpResponse
+import requests
+from requests.auth import HTTPBasicAuth
+import json
+
+# Create your views here.
+def getAccessToken(request):
+    consumer_key = '0iAFjJP6WV434Q27FAJLHzCZxXdNXZhf'
+    consumer_secret = 'IssZ6odZILd9EOyh'
+    api_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+    r = requests.get(api_URL, auth=HTTPBasicAuth(consumer_key, consumer_secret))
+    mpesa_access_token = json.loads(r.text)
+    validate_mpesa_access_token = mpesa_access_token['access_token']
+    return HttpResponse(validate_mpesa_access_token)
+    
