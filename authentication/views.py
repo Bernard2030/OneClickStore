@@ -2,6 +2,8 @@ from rest_framework import permissions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+from authentication.mpesa_credentials import LipanaMpesaPpassword, MpesaAccessToken
 from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, RegisterSerializer, UpdateUserSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -102,6 +104,7 @@ from django.http import HttpResponse
 import requests
 from requests.auth import HTTPBasicAuth
 import json
+from . mpesa_credentials import LipanaMpesaPpassword, MpesaAccessToken
 
 # Create your views here.
 def getAccessToken(request):
@@ -113,3 +116,25 @@ def getAccessToken(request):
     validate_mpesa_access_token = mpesa_access_token['access_token']
     return HttpResponse(validate_mpesa_access_token)
     
+
+
+def lipa_na_mpesa_online(request):
+    access_token = MpesaAccessToken.validated_mpesa_access_token 
+    api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+    headers = { "Authorization": "Bearer %s" % access_token }
+    request = {
+        "BusinessShortCode": LipanaMpesaPpassword.Business_short_code,
+        "Password": LipanaMpesaPpassword.decode_password,
+        "Timestamp": LipanaMpesaPpassword.lipa_time,
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": "1",
+        "PartyA": "254791176810",
+        "PartyB": LipanaMpesaPpassword.Business_short_code,
+        "PhoneNumber": "254791176810",
+        "CallBackURL":"https://sandbox.safaricom.co.ke/mpesa/",
+        "AccountReference": "Bernard",
+        "TransactionDesc": "Testing stk push"
+
+    }   
+    response = requests.post(api_url, json = request, headers=headers)
+    return HttpResponse('success')
