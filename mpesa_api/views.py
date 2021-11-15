@@ -7,7 +7,7 @@ from requests.auth import HTTPBasicAuth
 import json
 from . mpesa_credentials import LipanaMpesaPpassword, MpesaAccessToken
 from django.views.decorators.csrf import csrf_exempt
-from . models import MpesaPayment
+from . models import MpesaPayments
 
 # Create your views here.
 def getAccessToken(request):
@@ -44,14 +44,14 @@ def lipa_na_mpesa_online(request):
 
 
 @csrf_exempt
-def register_url(request):
+def register_urls(request):
     access_token = MpesaAccessToken.validated_mpesa_access_token 
     api_url = "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl"
     headers = { "Authorization": "Bearer %s" % access_token }
-    options = {"ShortCode": LipanaMpesaPpassword.Business_short_code,
+    options = {"ShortCode": LipanaMpesaPpassword.Test_c2b_shortcode,
                 "ResponseType": "Completed",
-                "ConfirmationURL": "https://127.0.0.1:8000/api/v1/c2b/confirmation",
-                "ValidationURL": "https://127.0.0.1:8000/api/v1/c2b/validation"
+                "ConfirmationURL": "https://6095-154-159-238-95.ngrok.io/api/v1/c2b/confirmation",
+                "ValidationURL": "https://6095-154-159-238-95.ngrok.io/api/v1/c2b/validation"
                 }
     response = requests.post(api_url, json = options, headers=headers)
     return HttpResponse(response.text)
@@ -76,7 +76,7 @@ def confirmation(request):
     mpesa_payment = json.loads(mpesa_body)
 
 
-    payment = MpesaPayment(
+    payment = MpesaPayments(
         first_name = mpesa_payment['FirstName'],
         last_name = mpesa_payment['LastName'],
         middle_name = mpesa_payment['MiddleName'],
