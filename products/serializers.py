@@ -59,3 +59,26 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'review')
         read_only_fields = ('id', 'user', 'review')
 
+
+class ProductSaleSerializer(serializers.ModelSerializer):
+    """
+    Serializer for ProductSale model
+    """
+    product = ProductSerializer( read_only=True)
+
+    class Meta:
+        model = ProductSale
+        fields = ('id', 'product', 'sale_price', 'date_sold')
+        read_only_fields = ('id', 'product', 'sale_price', 'date_sold')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    """
+    Serializer for Category model
+    """
+    product = ProductSerializer( read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'product')
+        read_only_fields = ('id', 'name', 'product')
