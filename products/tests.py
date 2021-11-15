@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
-from .models import Product, UserProfile, UserRating
+from .models import Product, UserProfile, UserRating, ProductSale, UserReview, Category
 
 
 # Create your tests here.
@@ -188,5 +188,110 @@ class UserRatingTests(TestCase):
         self.rating.save()
         user_rating = UserRating.objects.get(user=self.user)
         self.assertEquals(user_rating.rating, 3)
+
+
+class ProductSaleTests(TestCase):
+    """
+
+    """
+
+    def setUp(self):
+        self.user = User(id=1, username='zoo', password='testpwsd123')
+        self.user.save()
+        self.user_2 = User(id=2, username='zoo2', password='testpwsd123')
+        self.user_2.save()
+        self.product = Product(id=1, name='test', price=3110, description='sample test', image='test')
+        self.product.save()
+        self.product_2 = Product(id=2, name='test2', price=1000, description='test', image='test')
+        self.product_2.save()
+        self.sale = ProductSale(id=1, sale_price=1000, product=self.product)
+        self.sale.save()
+        self.sale_2 = ProductSale(id=2, sale_price=1000, product=self.product_2)
+        self.sale_2.save()
+
+    def tearDown(self):
+        self.user = None
+        self.user_2 = None
+        self.product = None
+        self.product_2 = None
+        self.sale = None
+        self.sale_2 = None
+
+    def test_instance(self):
+        self.assertTrue(isinstance(self.sale, ProductSale))
+
+    def test_save_sale(self):
+        self.sale.save()
+
+    def test_delete_sale(self):
+        self.sale.delete()
+
+    def test_update_sale(self):
+        self.sale.sale_price = 1000
+        self.sale.save()
+        self.assertEquals(self.sale.sale_price, 1000)
+
+    def test_get_sale(self):
+        self.sale.sale_price = 1000
+        self.sale.save()
+        sale = ProductSale.objects.get(id=1)
+        self.assertEquals(sale.sale_price, 1000)
+
+    def test_get_all_sales(self):
+        self.sale.sale_price = 3000
+        self.sale_2.sale_price = 10220
+        self.sale.save()
+        self.sale_2.save()
+        sales = ProductSale.objects.all()
+        self.assertEquals(len(sales), 2)
+
+    def test_get_all_sales_by_id(self):
+        self.sale.sale_price = 3000
+        self.sale.save()
+        sales = ProductSale.objects.all()
+        self.assertEquals(sales[0].id, 2)
+
+    def test_get_all_sales_by_sale_price(self):
+        self.sale.sale_price = 3000
+        self.sale.save()
+        sales = ProductSale.objects.all()
+        self.assertEquals(sales[1].sale_price, 3000)
+
+    def test_get_all_sales_by_product(self):
+        self.sale.sale_price = 3000
+        self.sale.save()
+        sales = ProductSale.objects.all()
+        self.assertEquals(sales[1].product, self.product)
+
+    def test_get_product_sale(self):
+        self.sale.sale_price = 3000
+        self.sale.save()
+        sale = ProductSale.objects.get(product=self.product)
+        self.assertEquals(sale.sale_price, 3000)
+
+    def test_get_product_sale_by_id(self):
+        self.sale.sale_price = 8000
+        self.sale.save()
+        sale = ProductSale.objects.get(id=1)
+        self.assertEquals(sale.sale_price, 8000)
+
+    def test_get_product_sale_by_sale_price(self):
+        self.sale.sale_price = 7070
+        self.sale.save()
+        sale = ProductSale.objects.get(sale_price=7070)
+        self.assertEquals(sale.sale_price, 7070)
+
+    def test_get_product_sale_by_product(self):
+        self.sale.sale_price = 7070
+        self.sale.save()
+        sale = ProductSale.objects.get(product=self.product)
+        self.assertEquals(sale.sale_price, 7070)
+
+    def test_get_product_sale_by_product_id(self):
+        self.sale.sale_price = 9038
+        self.sale.save()
+        sale = ProductSale.objects.get(product=self.product.id)
+        self.assertEquals(sale.sale_price, 9038)
+
 
 
