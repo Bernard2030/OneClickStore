@@ -294,4 +294,92 @@ class ProductSaleTests(TestCase):
         self.assertEquals(sale.sale_price, 9038)
 
 
+class CategoryTests(TestCase):
+
+    def setUp(self):
+        self.user = User(id=1, username='zoo', password='testpwsd123')
+        self.user.save()
+        self.user_2 = User(id=2, username='zoo2', password='testpwsd123')
+        self.user_2.save()
+        self.category = Category(id=1, name='test')
+        self.category.save()
+        self.category_2 = Category(id=2, name='test2')
+        self.category_2.save()
+
+    def tearDown(self):
+        self.user = None
+        self.user_2 = None
+        self.category = None
+        self.category_2 = None
+
+    def test_instance(self):
+        self.assertTrue(isinstance(self.category, Category))
+
+    def test_save_category(self):
+        self.category.save()
+
+    def test_delete_category(self):
+        self.category.delete()
+
+    def test_update_category(self):
+        self.category.name = 'test'
+        self.category.save()
+        self.assertEquals(self.category.name, 'test')
+
+    def test_get_category(self):
+        self.category.name = 'test'
+        self.category.save()
+        category = Category.objects.get(id=1)
+        self.assertEquals(category.name, 'test')
+
+    def test_get_all_categories(self):
+        self.category.name = 'test'
+        self.category_2.name = 'test2'
+        self.category.save()
+        self.category_2.save()
+        categories = Category.objects.all()
+        self.assertEquals(len(categories), 2)
+
+    def test_get_all_categories_by_id(self):
+        self.category.name = 'test'
+        self.category.save()
+        categories = Category.objects.all()
+        self.assertEquals(categories[0].id, 2)
+
+    def test_get_all_categories_by_name(self):
+        self.category.name = 'test'
+        self.category.save()
+        categories = Category.objects.all()
+        self.assertEquals(categories[1].name, 'test')
+
+    def test_get_category_by_name(self):
+        self.category.name = 'test'
+        self.category.save()
+        category = Category.objects.get(name='test')
+        self.assertEquals(category.name, 'test')
+
+    def test_get_category_by_id(self):
+        self.category.name = 'test'
+        self.category.save()
+        category = Category.objects.get(id=1)
+        self.assertEquals(category.name, 'test')
+
+    def test_get_category_by_name_and_id(self):
+        self.category.name = 'test'
+        self.category.save()
+        category = Category.objects.get(name='test', id=1)
+        self.assertEquals(category.name, 'test')
+
+    def test_get_category_by_name_and_id_2(self):
+        self.category.name = 'test'
+        self.category.save()
+        category = Category.objects.get(name='test', id=2)
+        self.assertEquals(category.name, 'test')
+
+    def test_get_category_by_name_and_id_3(self):
+        self.category.name = 'test'
+        self.category.save()
+        category = Category.objects.get(name='test', id=3)
+        self.assertEquals(category.name, 'test')
+
 
