@@ -1,3 +1,5 @@
+from unicodedata import category
+
 from django.contrib.auth.models import User
 from django.db import models
 from cloudinary.models import CloudinaryField
@@ -8,6 +10,13 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
@@ -15,6 +24,7 @@ class Product(models.Model):
     # image = models.ImageField(null=True, blank=True)
     image = CloudinaryField('image', null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -123,5 +133,30 @@ class UserRating(models.Model):
     def get_date(self):
         return self.date
 
-    def get_total_score(self):
-        return self.total_score
+
+class UserReview(models.Model):
+    """
+    Project Review model
+    """
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="user_reviews", null=True)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
+    review = models.TextField(blank=True)
+
+    def __str__(self):
+        return f'{self.user.username}: review'
+
+    def get_absolute_url(self):
+        return "/profile/{}".format(self.id)
+
+    def get_user(self):
+        return self.user
+
+    def get_user_id(self):
+        return self.user.id
+
+    def get_review(self):
+        return self.review
+
+    def get_date(self):
+        return self.date
+
