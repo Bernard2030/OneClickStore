@@ -1,33 +1,41 @@
-from rest_framework import serializers
 
-from .models import Product, UserProfile, UserRating, User
+from rest_framework import serializers
+from cloudinary.models import CloudinaryField
+from .models import Product, ProductSale, UserProfile, UserRating, User, UserReview, Category
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    image = CloudinaryField('image')
+    category = serializers.StringRelatedField()
+
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'price', 'image', 'date_added')
+        fields = ('id', 'name', 'description', 'price', 'image', 'category', 'date_added')
         read_only_fields = ('id', 'date_added')
-
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ('id', 'user', 'profile_pic', 'location', 'date_joined')
-        read_only_fields = ('id', 'user')
 
 
 class UserSerializer(serializers.ModelSerializer):
     """
     Serializer for User model
     """
-    product = ProductSerializer(many=True, read_only=True)
-    profile = UserProfileSerializer(read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'product', 'profile')
+        fields = ('id', 'username', 'email')
         read_only_fields = ('id', 'username', 'email')
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    """
+    Serializer for UserProfile model
+    """
+    product = ProductSerializer(many=True, read_only=True)
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ('id', 'user', 'profile_pic', 'location', 'product', 'date_joined')
+        read_only_fields = ('id', 'user', 'date_joined'),
 
 
 class RatingSerializer(serializers.ModelSerializer):
@@ -39,3 +47,15 @@ class RatingSerializer(serializers.ModelSerializer):
         model = UserRating
         fields = ('id', 'user', 'rating')
         read_only_fields = ('id', 'user', 'rating')
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    """
+    Serializer for UserReview model
+    """
+
+    class Meta:
+        model = UserReview
+        fields = ('id', 'user', 'review')
+        read_only_fields = ('id', 'user', 'review')
+
