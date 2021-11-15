@@ -1,8 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from authentication.views import MyObtainTokenPairView, RegisterView, ChangePasswordView, UpdateProfileView, LogoutView
-# mpesa_api
-from authentication import views
+
 
 urlpatterns = [
 
@@ -14,11 +13,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
 
-    # mpesa_api
-
-    path('access/token/',views.getAccessToken,name='get_mpesa_access_token'),
-    path('online/lipa',views.lipa_na_mpesa_online,name='lipa_na_mpesa'),
-
+  
     
     
 ]
