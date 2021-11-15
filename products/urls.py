@@ -8,12 +8,14 @@ from . import views
 schema_view = get_swagger_view(title='Online Store API')
 router = routers.DefaultRouter()
 router.register(r'products', views.ProductViewSet)
+router.register(r'userprofiles', views.UserProfileViewSet)
+router.register(r'ratings', views.RatingViewSet)
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/products-all', views.ProductListView.as_view(), name='product-list'),
+    # path('api/products-all/', views.ProductListView.as_view(), name='product-list'),
     path('api-docs/', schema_view, name="api-docs"),
     # path('logout/', views.LogoutView.as_view(), {"next_page": '/'}),
     path('api-token-auth/', obtain_auth_token),
