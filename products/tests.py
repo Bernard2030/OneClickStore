@@ -370,16 +370,5 @@ class CategoryTests(TestCase):
         category = Category.objects.get(name='test', id=1)
         self.assertEquals(category.name, 'test')
 
-    def test_get_category_by_name_and_id_2(self):
-        self.category.name = 'test'
-        self.category.save()
-        category = Category.objects.get(name='test', id=2)
-        self.assertEquals(category.name, 'test')
-
-    def test_get_category_by_name_and_id_3(self):
-        self.category.name = 'test'
-        self.category.save()
-        category = Category.objects.get(name='test', id=3)
-        self.assertEquals(category.name, 'test')
 
 
