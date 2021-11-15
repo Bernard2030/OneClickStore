@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.views.generic import DeleteView, ListView
 from rest_framework import viewsets
-from .serializers import ProductSerializer, UserProfileSerializer, UserSerializer, RatingSerializer
-from .models import Product, UserProfile, UserRating
+from .serializers import ProductSerializer, UserProfileSerializer, UserSerializer, RatingSerializer, ReviewSerializer, \
+    ProductSaleSerializer, CategorySerializer
+from .models import Product, UserProfile, UserRating, UserReview, ProductSale, Category
 
 
 def index(request):
@@ -48,3 +49,18 @@ class UserViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = UserRating.objects.all()
     serializer_class = RatingSerializer
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = UserReview.objects.all()
+    serializer_class = ReviewSerializer
+
+
+class ProductSaleViewSet(viewsets.ModelViewSet):
+    queryset = ProductSale.objects.all()
+    serializer_class = ProductSaleSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
