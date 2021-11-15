@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.views.generic import DeleteView, ListView
 from rest_framework import viewsets
-from .serializers import ProductSerializer
-from .models import Product
+from .serializers import ProductSerializer, UserProfileSerializer, UserSerializer, RatingSerializer
+from .models import Product, UserProfile, UserRating
 
 
 def index(request):
@@ -32,3 +33,18 @@ class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == product.owner:
             return True
         return False
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class RatingViewSet(viewsets.ModelViewSet):
+    queryset = UserRating.objects.all()
+    serializer_class = RatingSerializer

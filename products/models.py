@@ -3,6 +3,7 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 
 # Create your models here.
+from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -85,6 +86,9 @@ class UserProfile(models.Model):
     def get_product_count(self):
         return self.products.count()
 
+    def get_total_user_count(self):
+        return UserProfile.objects.count()
+
 
 class UserRating(models.Model):
     """
@@ -99,7 +103,16 @@ class UserRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_ratings", null=True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
     rating = models.FloatField(choices=rating, default=0, blank=True)
-    total_score = models.FloatField(default=0, blank=True)
+    total_rating = models.FloatField(default=0, blank=True)
+
+    @receiver(post_save)
+    def update_total_score(sender, instance, created, **kwargs):
+        if created:
+            total_rating = UserRating.objects.filter(user=instance.user).aggregate(Sum('rating'))
+            instance.total_rating = total_rating['rating__sum']/UserRating.objects.filter(user=instance.user).count()
+            print(instance.total_rating)
+            instance.total_rating = round(instance.total_rating, 2)
+            instance.save()
 
     def __str__(self):
         return f'{self.user.username}: rating'
