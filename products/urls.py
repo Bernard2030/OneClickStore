@@ -10,6 +10,11 @@ router = routers.DefaultRouter()
 router.register(r'products', views.ProductViewSet)
 router.register(r'userprofiles', views.UserProfileViewSet)
 router.register(r'ratings', views.RatingViewSet)
+router.register(r'users', views.UserViewSet)
+router.register(r'product-sales', views.ProductSaleViewSet)
+router.register(r'categories', views.CategoryViewSet)
+
+
 
 urlpatterns = [
     path('', views.index, name='index'),
