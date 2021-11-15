@@ -109,7 +109,7 @@ class UserRating(models.Model):
     def update_total_score(sender, instance, created, **kwargs):
         if created:
             total_rating = UserRating.objects.filter(user=instance.user).aggregate(Sum('rating'))
-            instance.total_rating = total_rating['rating__sum']/UserRating.objects.filter(user=instance.user).count()
+            instance.total_rating = total_rating['rating__sum']
             print(instance.total_rating)
             instance.total_rating = round(instance.total_rating, 2)
             instance.save()
