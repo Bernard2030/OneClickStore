@@ -14,8 +14,6 @@ router.register(r'users', views.UserViewSet)
 router.register(r'product-sales', views.ProductSaleViewSet)
 router.register(r'categories', views.CategoryViewSet)
 
-
-
 urlpatterns = [
     path('', views.index, name='index'),
     path('api/', include(router.urls)),
@@ -27,4 +25,4 @@ urlpatterns = [
     # path('<int:pk>/', views.ProductDetail.as_view(), name='product-detail'),
     # path('<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),
 
-    ]
+]
