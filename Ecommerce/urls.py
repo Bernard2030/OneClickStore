@@ -30,6 +30,12 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls'))
 
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('products.urls')),
+    # path('auth/', include('authentication.urls')),
+    path("stripe/", include("djstripe.urls", namespace="djstripe")),
 ]
 
 if settings.DEBUG:
