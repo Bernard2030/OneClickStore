@@ -27,7 +27,7 @@ def send_email(email, subject, message):
     # send email
     try:
         message = Mail(
-            from_email="kenmwaura1738@gmail.com",
+            from_email=settings.EMAIL_HOST_USER,
             to_emails=email,
             subject=subject,
             html_content=message)
