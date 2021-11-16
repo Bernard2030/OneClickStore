@@ -55,10 +55,7 @@ INSTALLED_APPS = [
     'authentication',
     'products',
     'mpesa_api',
-   
     'rest_framework_swagger',
-    'authentication',
-    'products',
     'cloudinary',
     "corsheaders",
     'bootstrap5',
