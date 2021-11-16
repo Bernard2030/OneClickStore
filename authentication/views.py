@@ -3,7 +3,6 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-
 from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, RegisterSerializer, UpdateUserSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -14,54 +13,47 @@ from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.twitter.views import TwitterOAuthAdapter
 from dj_rest_auth.social_serializers import TwitterLoginSerializer
-
-
-# sendgrid imports
+import africastalking
 import os
+from dotenv import load_dotenv
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from django.conf import settings
 
-
-message = Mail(
-    from_email='opiyodoro@gmail.com',
-    to_emails='brobernard.254@gmail.com',
-    subject='Sending with Twilio SendGrid is Fun',
-    html_content='<strong>and easy to do anywhere, even with Python</strong>')
-
-try:
-    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-    response = sg.send(message)
-    print(response.status_code)
-
-except Exception as e:
-    print(e) 
-     
-
-# sending of sms messages
-import africastalking
+load_dotenv()
 
 
-username = "YOUR_USERNAME"
-api_key = "YOUR_API_KEY" 
+def send_email(email, subject, message):
+    # send email
+    try:
+        message = Mail(
+            from_email="kenmwaura1738@gmail.com",
+            to_emails=email,
+            subject=subject,
+            html_content=message)
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+        return True
+    except Exception as e:
+        print(e)
+        return False
 
-africastalking.initialize(username, api_key)
+
+class SendEmailMessageView(APIView):
+    # permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        email = request.data['email']
+        subject = request.data['subject']
+        message = request.data['message']
+        if send_email(email, subject, message):
+            return Response({'success': True}, status=status.HTTP_200_OK)
+        return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# initialize SMS service
-sms = africastalking.SMS
-
-
-# response = sms.send("Hello world", ["+254791176810"])
-# print(response)
-
-
-
-
-
-
-
-# Create your views here.
 
 class MyObtainTokenPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
@@ -99,7 +91,6 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class FacebookLogin(SocialLoginView):
