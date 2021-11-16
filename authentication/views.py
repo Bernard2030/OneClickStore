@@ -1,4 +1,6 @@
+
 from rest_framework import permissions
+from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -57,7 +59,6 @@ class SendEmailMessageView(APIView):
 at_username = os.environ.get('AT_USERNAME')
 at_api_key = os.environ.get('AT_API_KEY')
 
-
 africastalking.initialize(at_username, at_api_key)
 
 # initialize SMS service
@@ -79,14 +80,34 @@ def send_sms(phone_number, message):
 
 class SendMessageView(APIView):
     # permission_classes = (IsAuthenticated,)
+    parser_classes = [JSONParser]
 
     def post(self, request):
+        """
+        Send a message to a user
+        ---
+        ## Send Message route
+        type:
+            number:
+                type: string
+                required: true
+            message:
+                type: string
+                required: true
+        parameters:
+            - number: number
+              message: message
+        responseMessages:
+            - code: 200
+              message: Message sent successfully
+            - code: 400
+              message: Message not sent
+        """
         phone_number = request.data['phone_number']
         message = request.data['message']
         if send_sms(phone_number, message):
             return Response({'success': True}, status=status.HTTP_200_OK)
         return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class MyObtainTokenPairView(TokenObtainPairView):
