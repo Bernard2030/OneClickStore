@@ -54,6 +54,40 @@ class SendEmailMessageView(APIView):
         return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 
+at_username = os.environ.get('AT_USERNAME')
+at_api_key = os.environ.get('AT_API_KEY')
+
+
+africastalking.initialize(at_username, at_api_key)
+
+# initialize SMS service
+sms = africastalking.SMS
+app = africastalking.Application
+
+
+# sending of sms messages
+def send_sms(phone_number, message):
+    # send SMS
+    try:
+        # print(phone_number)
+        print(app.fetch_application_data())
+        return sms.send(message, [phone_number])
+    except Exception as e:
+        print(e)
+        return False
+
+
+class SendMessageView(APIView):
+    # permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        phone_number = request.data['phone_number']
+        message = request.data['message']
+        if send_sms(phone_number, message):
+            return Response({'success': True}, status=status.HTTP_200_OK)
+        return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class MyObtainTokenPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
