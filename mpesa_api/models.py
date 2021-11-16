@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class BaseModel(models.Model):
@@ -11,6 +12,7 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
 
 # M-pesa Payment models
 
@@ -27,6 +29,7 @@ class MpesaCalls(BaseModel):
         db_table = 'mpesa_calls'
         verbose_name = 'Mpesa Call'
         verbose_name_plural = 'Mpesa Calls'
+
 
 class MpesaCallbacks(BaseModel):
     """
@@ -45,7 +48,7 @@ class MpesaCallbacks(BaseModel):
 
 class MpesaPayments(BaseModel):
     """
-    MpesaPayments class that defines the fields for the MpesaPayments model
+    Mpesa Payments class that defines the fields for the MpesaPayments model
     """
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
@@ -58,12 +61,8 @@ class MpesaPayments(BaseModel):
     organization_balance = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
-        
         verbose_name = 'Mpesa Payment'
         verbose_name_plural = 'Mpesa Payments'
 
-
     def __str__(self):
-        return self.first_name    
-                 
-    
+        return self.first_name
