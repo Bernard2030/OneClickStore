@@ -84,6 +84,7 @@ jobs:
         export GITHUB_WORKFLOW=True
         export MODE=workflow
         python manage.py migrate
+        python manage.py check
     - name: Run tests
       run: |
           python manage.py test
