@@ -1,11 +1,7 @@
-from unicodedata import category
-
 from django.contrib.auth.models import User
 from django.db import models
 from cloudinary.models import CloudinaryField
 
-# Create your models here.
-from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -31,6 +27,18 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return "/products/{}".format(self.id)
+
+    @classmethod
+    def get_all_products(cls):
+        return cls.objects.all()
+
+    @classmethod
+    def get_product_by_id(cls, id):
+        return cls.objects.get(id=id)
+
+    @classmethod
+    def get_products_image_url(cls):
+        return cls.image.url
 
 
 class UserProfile(models.Model):
@@ -63,8 +71,17 @@ class UserProfile(models.Model):
     def get_absolute_url(self):
         return "/profile/{}".format(self.id)
 
-    def get_profile_pic(self):
-        return self.profile_pic.url
+    @classmethod
+    def get_all_users(cls):
+        return cls.objects.all()
+
+    @classmethod
+    def get_user_by_id(cls, id):
+        return cls.objects.get(id=id)
+
+    @classmethod
+    def get_user_image_url(cls):
+        return cls.profile_pic.url
 
     def get_username(self):
         return self.user.username

@@ -81,6 +81,9 @@ jobs:
         export ALLOWED_HOSTS=localhost
         export STRIPE_LIVE_SECRET_KEY=sk_live_51HXxqQqQXqQXqQXqQXqQXqQXqQXqQXqQXq
         export STRIPE_TEST_SECRET_KEY=sk_test_51HXxqQqQXqQXqQXqQXqQXqQXqQXqQXqQXq
+        export AT_USERNAME="enter your at_username"
+        export AT_API_KEY="enter your api_key"
+        export SENDGRID_API_KEY="enter your api_key"
         export GITHUB_WORKFLOW=True
         export MODE=workflow
         python manage.py migrate
@@ -97,6 +100,10 @@ jobs:
         STRIPE_TEST_SECRET_KEY: sk_test_51HXxqQqQXqQXqQXqQXqQXqQXqQXqQXqQXq
         GITHUB_WORKFLOW: True
         MODE: workflow
+        AT_USERNAME: "enter your at_username"
+        AT_API_KEY: "enter your api_key"
+        SENDGRID_API_KEY: "enter your api_key"
+
 
 
 
