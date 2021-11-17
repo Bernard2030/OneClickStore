@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import serializers
-from cloudinary.models import CloudinaryField
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from .models import Product, ProductSale, UserProfile, UserRating, User, UserReview, Category
 import os
 from dotenv import load_dotenv
@@ -80,15 +81,20 @@ class RatingSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'user', 'rating')
 
 
-class ReviewSerializer(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer, LoginRequiredMixin):
     """
     Serializer for UserReview model
     """
+    user = UserProfileSerializer(read_only=True).fields['user']['username']
+    username = serializers.SerializerMethodField()
 
     class Meta:
         model = UserReview
-        fields = ('id', 'user', 'review')
-        read_only_fields = ('id', 'user', 'review')
+        fields = ('id', 'user', 'username','review')
+        read_only_fields = ('id', )
+
+    def get_username(self, obj):
+        return obj.user.username
 
 
 class ProductSaleSerializer(serializers.ModelSerializer):
@@ -113,3 +119,4 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('id', 'name', 'product')
         read_only_fields = ('id', 'product')
+
