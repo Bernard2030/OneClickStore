@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 def index(request):
     return render(request, 'products/index.html')
 
@@ -26,7 +27,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().order_by('-date_added')
     for query in Product.objects.all():
         queryset.image = os.environ.get('CLOUDINARY_ROOT') + str(query.image)
-       # print(queryset.image)
+    # print(queryset.image)
     serializer_class = ProductSerializer
 
 
@@ -64,13 +65,13 @@ class ProductSearchView(ListAPIView):
     serializer_class = ProductSerializer
 
     filter_backends = [DjangoFilterBackend]
-
-    # filterset_fields = ['name', 'category']
+    filterset_fields = ['name']
 
     def get_queryset(self):
         queryset = Product.objects.all()
         product_search = self.request.query_params.get('name')
-        if product_search is not None:
+        category_search = self.request.query_params.get('category')
+        if product_search:
             queryset = queryset.filter(name__icontains=product_search)
         return queryset
 
@@ -78,6 +79,19 @@ class ProductSearchView(ListAPIView):
         products = Product.objects.filter(name__icontains=request.data['name'])
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
+
+
+class CategorySearchView(ListAPIView):
+    serializer_class = CategorySerializer
+
+    filterset_fields = ['name']
+
+    def get_queryset(self):
+        queryset = Category.objects.all()
+        category_search = self.request.query_params.get('name')
+        if category_search:
+            queryset = queryset.filter(name__icontains=category_search)
+        return queryset
 
 
 class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
