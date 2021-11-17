@@ -88,7 +88,7 @@ jobs:
         export MODE=workflow
         export CLOUDINARY_ROOT='https://res.cloudinary.com'
         python manage.py makemigrations
-
+        python manage.py migrate --run-syncdb
         python manage.py check
     - name: Run tests
       run: |
