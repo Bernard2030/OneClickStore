@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import serializers
-from cloudinary.models import CloudinaryField
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from .models import Product, ProductSale, UserProfile, UserRating, User, UserReview, Category
 import os
 from dotenv import load_dotenv
@@ -52,8 +53,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     """
     Serializer for UserProfile model
     """
-    product = ProductSerializer(many=True, read_only=True)
-    user = UserSerializer(read_only=True)
+    products = ProductSerializer(many=True, read_only=True)
+    user = UserSerializer().fields['username']
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -62,8 +63,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('id', 'user', 'profile_pic', 'location', 'product', 'date_joined')
-        read_only_fields = ('id', 'user', 'date_joined'),
+        fields = ( 'user', 'profile_pic', 'location', 'products', 'date_joined')
+        read_only_fields = (),
 
     def get_user_image_url(self, obj):
         return str(obj.profile_pic)
@@ -76,19 +77,24 @@ class RatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserRating
-        fields = ('id', 'user', 'rating')
-        read_only_fields = ('id', 'user', 'rating')
+        fields = ('user', 'rating')
+        read_only_fields = ( 'user', 'rating')
 
 
-class ReviewSerializer(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer, LoginRequiredMixin):
     """
     Serializer for UserReview model
     """
+    user = UserProfileSerializer(read_only=True).fields['user']
+    username = serializers.SerializerMethodField()
 
     class Meta:
         model = UserReview
-        fields = ('id', 'user', 'review')
-        read_only_fields = ('id', 'user', 'review')
+        fields = ('id', 'user', 'username','review')
+        read_only_fields = ('id', )
+
+    def get_username(self, obj):
+        return obj.user.username
 
 
 class ProductSaleSerializer(serializers.ModelSerializer):
@@ -113,3 +119,4 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('id', 'name', 'product')
         read_only_fields = ('id', 'product')
+

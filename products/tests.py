@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
-from .models import Product, UserProfile, UserRating, ProductSale, UserReview, Category
+from .models import Product, UserProfile, UserRating, ProductSale, UserReview, Category, SMSMessage
 
 
 # Create your tests here.
@@ -371,4 +371,126 @@ class CategoryTests(TestCase):
         self.assertEquals(category.name, 'test')
 
 
+class SMSMessageTests(TestCase):
+    """
+    tests for sms message model
+    """
 
+    def setUp(self):
+        self.user = User(id=1, username='zoo', password='testpwsd123')
+        self.user.save()
+        self.user_2 = User(id=2, username='zoo2', password='testpwsd123')
+        self.user_2.save()
+        self.number = '+254712345678'
+        self.number_2 = '+254712345679'
+        self.message = 'test message'
+        self.sms_message = SMSMessage(id=1, number=self.number, message=self.message)
+        self.sms_message.save()
+        self.sms_message_2 = SMSMessage(id=2, number=self.number_2, message=self.message)
+        self.sms_message_2.save()
+
+    def tearDown(self):
+        self.user = None
+        self.user_2 = None
+        self.number = None
+        self.number_2 = None
+        self.message = None
+        self.sms_message = None
+        self.sms_message_2 = None
+
+    def test_instance(self):
+        self.assertTrue(isinstance(self.sms_message, SMSMessage))
+
+    def test_save_sms_message(self):
+        self.sms_message.save()
+
+    def test_delete_sms_message(self):
+        self.sms_message.delete()
+
+    def test_update_sms_message(self):
+        self.sms_message.message = 'sample message'
+        self.sms_message.save()
+        self.assertEquals(self.sms_message.message, 'sample message')
+
+    def test_get_sms_message(self):
+        self.sms_message.message = 'sample message'
+        self.sms_message.save()
+        sms_message = SMSMessage.objects.get(id=1)
+        self.assertEquals(sms_message.message, 'sample message')
+
+    def test_get_all_sms_messages(self):
+        self.sms_message.message = 'sample message'
+        self.sms_message_2.message = 'sample main message'
+        self.sms_message.save()
+        self.sms_message_2.save()
+        sms_messages = SMSMessage.objects.all()
+        self.assertEquals(len(sms_messages), 2)
+
+    def test_get_all_sms_messages_by_id(self):
+        self.sms_message.message = 'sample message'
+        self.sms_message.save()
+        sms_messages = SMSMessage.objects.all()
+        self.assertEquals(sms_messages[0].id, 2)
+
+
+class UserReviewTests(TestCase):
+    """
+    Tests for User Review model
+    """
+
+    def setUp(self):
+        self.user = User(id=41, username='zoo', password='testpwsd123')
+        self.user.save()
+        self.user_profile = UserProfile(user=self.user, username='zoo', location='Kisumu, KE',
+                                        contact_phone='0712345678', contact_email='zoo@test.com')
+        # self.user_profile.save()
+        self.user_2 = User(13, username='zoo2', password='testpwsd123')
+        self.user_2.save()
+        self.user_profile_2 = UserProfile(id=22, user=self.user_2, username='zoo2', location='Meru, KE',
+                                          contact_phone='0712345678',
+                                          contact_email='zoo2@test.com')
+        # self.user_profile_2.save()
+        self.review = UserReview(id=1, review='test review')
+        self.review.save()
+        self.review_2 = UserReview(id=2, review='test review 2')
+        self.review_2.save()
+
+    def tearDown(self):
+        self.user = None
+        self.user_2 = None
+        self.review = None
+        self.review_2 = None
+
+    def test_instance(self):
+        self.assertTrue(isinstance(self.review, UserReview))
+
+    def test_save_review(self):
+        self.review.save()
+
+    def test_delete_review(self):
+        self.review.delete()
+
+    def test_update_review(self):
+        self.review.review = 'sample review'
+        self.review.save()
+        self.assertEquals(self.review.review, 'sample review')
+
+    def test_get_review(self):
+        self.review.review = 'sample review'
+        self.review.save()
+        review = UserReview.objects.get(id=1)
+        self.assertEquals(review.review, 'sample review')
+
+    def test_get_all_reviews(self):
+        self.review.review = 'sample review'
+        self.review_2.review = 'sample main review'
+        self.review.save()
+        self.review_2.save()
+        reviews = UserReview.objects.all()
+        self.assertEquals(len(reviews), 2)
+
+    def test_get_all_reviews_by_id(self):
+        self.review.review = 'sample review'
+        self.review.save()
+        reviews = UserReview.objects.all()
+        self.assertEquals(reviews[0].id, 2)
