@@ -160,7 +160,7 @@ class UserReview(models.Model):
     review = models.TextField(blank=True)
 
     def __str__(self):
-        return f'{self.user.username}: review'
+        return f'{self.user.user.username}: review'
 
     def get_absolute_url(self):
         return "/profile/{}".format(self.id)
