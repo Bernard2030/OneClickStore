@@ -8,7 +8,7 @@ load_dotenv()
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField()
+    # category = serializers.StringRelatedField()
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
