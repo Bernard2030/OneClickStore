@@ -87,6 +87,7 @@ jobs:
         export GITHUB_WORKFLOW=True
         export MODE=workflow
         export CLOUDINARY_ROOT='https://res.cloudinary.com'
+        python manage.py makemigrations
         python manage.py migrate
         python manage.py migrate --run-syncdb
         python manage.py check

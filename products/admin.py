@@ -5,6 +5,9 @@ admin.site.site_header = "OneClick Admin"
 admin.site.site_title = "OneClick Admin Portal"
 admin.site.index_title = "Welcome to OneClick Admin Portal"
 
+
+admin.site.site_header = "OneClick Admin"
+
 # Register your models here.
 admin.site.register(Product)
 admin.site.register(UserProfile)

@@ -1,6 +1,8 @@
 from django.test import TestCase
 # from mpesa_api.models import MpesaPayments,MpesaCallbacks,BaseModel,MpesaCalls
 
+# from mpesa_api.models import MpesaPayments,MpesaCallbacks,BaseModel,MpesaCalls
+
 # Create your tests here.
 """
 class MpesaPaymentsTest(TestCase):
