@@ -8,3 +8,5 @@ admin.site.register(UserRating)
 admin.site.register(ProductSale)
 admin.site.register(Category)
 
+admin.site.site_header = "OneClick Admin"
+
