@@ -215,7 +215,7 @@ class SMSMessage(models.Model):
     """
     SMS Message model
     """
-    number = models.CharField(max_length=11, blank=True)
+    number = models.CharField(max_length=13, blank=True)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="sms_messages", null=True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
     message = models.TextField(blank=True)
