@@ -25,9 +25,6 @@ def index(request):
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().order_by('-date_added')
-    for query in Product.objects.all():
-        queryset.image = os.environ.get('CLOUDINARY_ROOT') + str(query.image)
-    # print(queryset.image)
     serializer_class = ProductSerializer
 
 

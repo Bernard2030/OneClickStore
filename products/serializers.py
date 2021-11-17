@@ -8,7 +8,8 @@ load_dotenv()
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField()
+    # category = serializers.StringRelatedField()
+    category_name = serializers.StringRelatedField(source='category.name')
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -17,7 +18,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'price', 'image','category', 'date_added')
+        fields = ('id', 'name', 'description', 'price', 'image','category', 'date_added', 'category_name')
         read_only_fields = ('id', 'date_added')
 
     def get_image_url(self, obj):
