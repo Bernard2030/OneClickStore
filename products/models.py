@@ -221,7 +221,7 @@ class SMSMessage(models.Model):
     message = models.TextField(blank=True)
 
     def __str__(self):
-        return f'{self.user.username}: message'
+        return f'{self.user.user.username}: message'
 
     def get_absolute_url(self):
         return "/message/{}".format(self.id)
