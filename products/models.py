@@ -133,7 +133,7 @@ class UserRating(models.Model):
     total_rating = models.FloatField(default=0, blank=True)
 
     def __str__(self):
-        return f'{self.user.username}: rating'
+        return f'{self.user}: rating'
 
     def get_absolute_url(self):
         return "/profile/{}".format(self.id)
@@ -221,7 +221,7 @@ class SMSMessage(models.Model):
     message = models.TextField(blank=True)
 
     def __str__(self):
-        return f'{self.user.username}: message'
+        return f'{self.user.user.username}: message'
 
     def get_absolute_url(self):
         return "/message/{}".format(self.id)
