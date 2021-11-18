@@ -13,6 +13,7 @@ router.register(r'ratings', views.RatingViewSet)
 router.register(r'users', views.UserViewSet)
 router.register(r'product-sales', views.ProductSaleViewSet)
 router.register(r'categories', views.CategoryViewSet)
+router.register(r'reviews', views.ReviewViewSet)
 # router.register(r'search-products', views.ProductSearchView)
 
 urlpatterns = [

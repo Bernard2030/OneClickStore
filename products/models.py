@@ -160,7 +160,7 @@ class UserReview(models.Model):
     review = models.TextField(blank=True)
 
     def __str__(self):
-        return f'{self.user.username}: review'
+        return f'{self.user.user.username}: review'
 
     def get_absolute_url(self):
         return "/profile/{}".format(self.id)
@@ -209,3 +209,31 @@ class ProductSale(models.Model):
 
     def get_total_price(self):
         return self.sale_price
+
+
+class SMSMessage(models.Model):
+    """
+    SMS Message model
+    """
+    number = models.CharField(max_length=13, blank=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="sms_messages", null=True)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
+    message = models.TextField(blank=True)
+
+    def __str__(self):
+        return f'{self.user.username}: message'
+
+    def get_absolute_url(self):
+        return "/message/{}".format(self.id)
+
+    def get_user(self):
+        return self.user
+
+    def get_user_id(self):
+        return self.user.id
+
+    def get_message(self):
+        return self.message
+
+    def get_date(self):
+        return self.date

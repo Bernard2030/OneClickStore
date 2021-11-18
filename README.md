@@ -2,6 +2,8 @@
 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
+[![Docker Compose Actions Workflow](https://github.com/Bernard2030/OneClickStore/actions/workflows/online-store-docker.yml/badge.svg)](https://github.com/Bernard2030/OneClickStore/actions/workflows/online-store-docker.yml)
+
 Nowadays getting good quality used items at a fair price is becoming hectic, and even very difficult to
 get some items like used vehicles even in national Auction centres. On the other hand is how some of these goods can be able to reach their intended new owners in time and in good quality.
 
