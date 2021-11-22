@@ -60,9 +60,11 @@ INSTALLED_APPS = [
     "corsheaders",
     'bootstrap5',
     "djstripe",
+    'django_prometheus',
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -74,6 +76,7 @@ MIDDLEWARE = [
     # Simplified static file serving.
     # https://warehouse.python.org/project/whitenoise/
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 
 ]
 
@@ -111,7 +114,7 @@ DEBUG = os.environ.get('DEBUG', default=True)
 if os.environ.get('GITHUB_WORKFLOW') == 'True':
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'ENGINE': 'django_prometheus.db.backends.postgresql_psycopg2',
             'NAME': f'{os.environ.get("POSTGRES_DB_NAME")}',
             'USER': f'{os.environ.get("POSTGRES_USER")}',
             'PASSWORD': f'{os.environ.get("POSTGRES_PASSWORD")}',
