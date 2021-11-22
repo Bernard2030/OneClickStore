@@ -27,21 +27,22 @@ load_dotenv()
 
 def send_email(email, subject, message):
     # send email
-    try:
-        message = Mail(
-            from_email=settings.EMAIL_HOST_USER,
+    message = Mail(
+            from_email='opiyodoro@gmail.com',
             to_emails=email,
             subject=subject,
             html_content=message)
+    try:
+        
         sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
         response = sg.send(message)
         print(response.status_code)
         print(response.body)
         print(response.headers)
-        return True
+        # return True
     except Exception as e:
-        print(e)
-        return False
+        print(e.message)
+        # return False
 
 
 class SendEmailMessageView(APIView):

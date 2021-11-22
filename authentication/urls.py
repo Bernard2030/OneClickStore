@@ -32,3 +32,6 @@ urlpatterns = [
     path('send_email_message/', SendEmailMessageView.as_view(), name='send_email_message'),
 
 ]
+
+
+
