@@ -21,6 +21,7 @@ from dotenv import load_dotenv
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from django.conf import settings
+from products.models import SMSMessage, EmailMessage
 
 load_dotenv()
 
@@ -52,7 +53,17 @@ class SendEmailMessageView(APIView):
         subject = request.data['subject']
         message = request.data['message']
         if send_email(email, subject, message):
-            return Response({'success': True}, status=status.HTTP_200_OK)
+            try:
+                EmailMessage.objects.create(
+                    email=email,
+                    subject=subject,
+                    message=message
+                )
+
+            except Exception as e:
+                print(e)
+                return Response({"message": "Email not sent"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Email sent"}, status=status.HTTP_200_OK)
         return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -72,7 +83,17 @@ def send_sms(phone_number, message):
     try:
         # print(phone_number)
         print(app.fetch_application_data())
-        return sms.send(message, [phone_number])
+        user_message = sms.send(message, [phone_number])
+        if user_message:
+            try:
+                SMSMessage.objects.create(
+                    number=phone_number,
+                    message=message,
+                )
+                return 'message saved'
+            except Exception as e:
+                print(e)
+            return True
     except Exception as e:
         print(e)
         return False
