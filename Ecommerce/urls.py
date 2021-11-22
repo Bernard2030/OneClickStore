@@ -29,6 +29,9 @@ urlpatterns = [
     # Django stripe
     path("stripe/", include("djstripe.urls", namespace="djstripe")),
 
+    # Django prometheus
+    path('prometheus/', include('django_prometheus.urls')),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

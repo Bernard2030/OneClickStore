@@ -4,16 +4,18 @@ from cloudinary.models import CloudinaryField
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django_prometheus.models import ExportModelOperationsMixin
+from sendgrid.helpers.mail import subject
 
 
-class Category(models.Model):
+class Category(ExportModelOperationsMixin('category'), models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.name
 
 
-class Product(models.Model):
+class Product(ExportModelOperationsMixin('product'), models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -41,7 +43,7 @@ class Product(models.Model):
         return cls.image.url
 
 
-class UserProfile(models.Model):
+class UserProfile(ExportModelOperationsMixin('user_profile'), models.Model):
     """
     User Profile model
     """
@@ -117,7 +119,7 @@ class UserProfile(models.Model):
         return UserProfile.objects.count()
 
 
-class UserRating(models.Model):
+class UserRating(ExportModelOperationsMixin('user_rating'), models.Model):
     """
     Project Rating model
     """
@@ -151,7 +153,7 @@ class UserRating(models.Model):
         return self.date
 
 
-class UserReview(models.Model):
+class UserReview(ExportModelOperationsMixin('user_review'), models.Model):
     """
     Project Review model
     """
@@ -178,7 +180,7 @@ class UserReview(models.Model):
         return self.date
 
 
-class ProductSale(models.Model):
+class ProductSale(ExportModelOperationsMixin('product_sales'), models.Model):
     """
     Product Sale model
     """
@@ -211,7 +213,7 @@ class ProductSale(models.Model):
         return self.sale_price
 
 
-class SMSMessage(models.Model):
+class SMSMessage(ExportModelOperationsMixin('sms_message'), models.Model):
     """
     SMS Message model
     """
@@ -219,6 +221,35 @@ class SMSMessage(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="sms_messages", null=True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
     message = models.TextField(blank=True)
+
+    def __str__(self):
+        return f'{self.user.user.username}: message'
+
+    def get_absolute_url(self):
+        return "/message/{}".format(self.id)
+
+    def get_user(self):
+        return self.user
+
+    def get_user_id(self):
+        return self.user.id
+
+    def get_message(self):
+        return self.message
+
+    def get_date(self):
+        return self.date
+
+
+class EmailMessage(ExportModelOperationsMixin('email_message'), models.Model):
+    """
+    Email Message model
+    """
+    email = models.EmailField(blank=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="email_messages", null=True)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
+    message = models.TextField(blank=True)
+    subject = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return f'{self.user.user.username}: message'
