@@ -12,8 +12,8 @@ from .models import MpesaPayments
 
 # Create your views here.
 def getAccessToken(request):
-    consumer_key = '0iAFjJP6WV434Q27FAJLHzCZxXdNXZhf'
-    consumer_secret = 'IssZ6odZILd9EOyh'
+    consumer_key = 'CG4A9WH3V9EpKlB2jUGmvnblHdebKlhD'
+    consumer_secret = 'SnhOwSKglXbCmLou'
     api_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
     r = requests.get(api_URL, auth=HTTPBasicAuth(consumer_key, consumer_secret))
     mpesa_access_token = json.loads(r.text)
@@ -33,7 +33,7 @@ def lipa_na_mpesa_online(request):
         "Amount": "1",
         "PartyA": "254791176810",
         "PartyB": LipanaMpesaPpassword.Business_short_code,
-        "PhoneNumber": "254791176810",
+        "PhoneNumber": "254705814086",
         "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
         "AccountReference": "Bernard",
         "TransactionDesc": "Testing stk push"
