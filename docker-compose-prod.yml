@@ -21,6 +21,16 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env.prod.db
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    ports:
+      - "1337:80"
+    depends_on:
+      - web
 volumes:
   postgres_data:
+  static_volume:
   media_volume:
