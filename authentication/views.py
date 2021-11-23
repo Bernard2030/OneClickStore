@@ -1,11 +1,10 @@
-
 from rest_framework import permissions
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
-
 from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, RegisterSerializer, UpdateUserSerializer
+from products.serializers import SMSMessageSerializer, EmailMessageSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -20,7 +19,6 @@ import os
 from dotenv import load_dotenv
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-from django.conf import settings
 from products.models import SMSMessage, EmailMessage
 
 load_dotenv()
@@ -30,28 +28,32 @@ def send_email(email, subject, message):
     # send email
     try:
         message = Mail(
-            from_email=settings.EMAIL_HOST_USER,
+            from_email=os.environ.get('EMAIL_HOST_USER'),
             to_emails=email,
             subject=subject,
             html_content=message)
         sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
         response = sg.send(message)
+
         print(response.status_code)
         print(response.body)
         print(response.headers)
         return True
     except Exception as e:
-        print(e)
-        return False
+        print(e.body)
+        return False, e
 
 
 class SendEmailMessageView(APIView):
     # permission_classes = (IsAuthenticated,)
+    parser_classes = [JSONParser]
+    serializer_class = EmailMessageSerializer
 
     def post(self, request):
         email = request.data['email']
         subject = request.data['subject']
         message = request.data['message']
+        print(send_email(email, subject, message))
         if send_email(email, subject, message):
             try:
                 EmailMessage.objects.create(
@@ -59,7 +61,7 @@ class SendEmailMessageView(APIView):
                     subject=subject,
                     message=message
                 )
-
+                print(Response({'message': 'Email saved successfully'}, status=status.HTTP_200_OK))
             except Exception as e:
                 print(e)
                 return Response({"message": "Email not sent"}, status=status.HTTP_400_BAD_REQUEST)
@@ -102,6 +104,7 @@ def send_sms(phone_number, message):
 class SendMessageView(APIView):
     # permission_classes = (IsAuthenticated,)
     parser_classes = [JSONParser]
+    serializer_class = SMSMessageSerializer
 
     def post(self, request):
         """
@@ -129,6 +132,8 @@ class SendMessageView(APIView):
         if send_sms(phone_number, message):
             return Response({'success': True}, status=status.HTTP_200_OK)
         return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class MyObtainTokenPairView(TokenObtainPairView):
