@@ -1,6 +1,14 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
-from .models import Product, UserProfile, UserRating, ProductSale, UserReview, Category, SMSMessage
+from .models import (
+    Product,
+    UserProfile,
+    UserRating,
+    ProductSale,
+    UserReview,
+    Category,
+    SMSMessage,
+)
 
 
 # Create your tests here.
@@ -12,28 +20,34 @@ class ProductTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         Product.objects.create(
-            name='Test Product',
-            description='Test Description',
-            price=10.00
+            name="Test Product", description="Test Description", price=10.00
         )
-        Product.objects.create(name='A product', description='sample description', price=1000.00)
-        Product.objects.create(name='Another product', description='description', price=30000.00)
-        Product.objects.create(name='A really really long product name', description='description', price=10000.00)
+        Product.objects.create(
+            name="A product", description="sample description", price=1000.00
+        )
+        Product.objects.create(
+            name="Another product", description="description", price=30000.00
+        )
+        Product.objects.create(
+            name="A really really long product name",
+            description="description",
+            price=10000.00,
+        )
 
     def test_product_count(self):
         self.assertEqual(Product.objects.count(), 4)
 
     def test_product_name_length(self):
-        test_name = Product(name='A really really long product name')
+        test_name = Product(name="A really really long product name")
         self.assertEqual(len(test_name.name), 33)
 
     def test_product_name_length_short(self):
-        test_name = Product(name='A product')
+        test_name = Product(name="A product")
         self.assertEqual(len(test_name.name), 9)
 
     def test_str(self):
-        test_name = Product(name='A product')
-        self.assertEqual(str(test_name), 'A product')
+        test_name = Product(name="A product")
+        self.assertEqual(str(test_name), "A product")
 
     def test_product_price_length(self):
         test_price = Product(price=10000.00)
@@ -54,9 +68,9 @@ class UserProfileTests(TestCase):
     """
 
     def setUp(self):
-        self.user = User(id=1, username='zoo', password='testpwsd123')
+        self.user = User(id=1, username="zoo", password="testpwsd123")
         self.user.save()
-        self.user_2 = User(id=2, username='zoo2', password='testpwsd123')
+        self.user_2 = User(id=2, username="zoo2", password="testpwsd123")
         self.user_2.save()
 
     """
@@ -80,37 +94,37 @@ class UserProfileTests(TestCase):
         self.user.delete()
 
     def test_update_user(self):
-        self.user.username = 'zken'
+        self.user.username = "zken"
         self.user.save()
 
     def test_get_user(self):
-        self.user.username = 'zken'
+        self.user.username = "zken"
         self.user.save()
         user = User.objects.get(id=1)
-        self.assertEquals(user.username, 'zken')
+        self.assertEquals(user.username, "zken")
 
     def test_get_all_users(self):
-        self.user.username = 'zken'
-        self.user_2.username = 'zken2'
+        self.user.username = "zken"
+        self.user_2.username = "zken2"
         self.user.save()
         self.user_2.save()
         users = User.objects.all()
         self.assertEquals(len(users), 2)
 
     def test_get_all_users_by_id(self):
-        self.user.username = 'zken'
+        self.user.username = "zken"
         self.user.save()
         users = User.objects.all()
         self.assertEquals(users[0].id, 2)
 
     def test_get_all_users_by_username(self):
-        self.user.username = 'zken'
+        self.user.username = "zken"
         self.user.save()
         users = User.objects.all()
-        self.assertEquals(users[1].username, 'zken')
+        self.assertEquals(users[1].username, "zken")
 
     def test_get_user_profile(self):
-        self.user.username = 'zken'
+        self.user.username = "zken"
         self.user.save()
         user_profile = UserProfile.objects.get(user=self.user)
         self.assertEquals(user_profile.user, self.user)
@@ -122,9 +136,9 @@ class UserRatingTests(TestCase):
     """
 
     def setUp(self):
-        self.user = User(id=1, username='zoo', password='testpwsd123')
+        self.user = User(id=1, username="zoo", password="testpwsd123")
         self.user.save()
-        self.user_2 = User(id=2, username='zoo2', password='testpwsd123')
+        self.user_2 = User(id=2, username="zoo2", password="testpwsd123")
         self.user_2.save()
         self.rating = UserRating(id=1, rating=5, user=self.user)
         self.rating.save()
@@ -191,18 +205,20 @@ class UserRatingTests(TestCase):
 
 
 class ProductSaleTests(TestCase):
-    """
-
-    """
+    """ """
 
     def setUp(self):
-        self.user = User(id=1, username='zoo', password='testpwsd123')
+        self.user = User(id=1, username="zoo", password="testpwsd123")
         self.user.save()
-        self.user_2 = User(id=2, username='zoo2', password='testpwsd123')
+        self.user_2 = User(id=2, username="zoo2", password="testpwsd123")
         self.user_2.save()
-        self.product = Product(id=1, name='test', price=3110, description='sample test', image='test')
+        self.product = Product(
+            id=1, name="test", price=3110, description="sample test", image="test"
+        )
         self.product.save()
-        self.product_2 = Product(id=2, name='test2', price=1000, description='test', image='test')
+        self.product_2 = Product(
+            id=2, name="test2", price=1000, description="test", image="test"
+        )
         self.product_2.save()
         self.sale = ProductSale(id=1, sale_price=1000, product=self.product)
         self.sale.save()
@@ -295,15 +311,14 @@ class ProductSaleTests(TestCase):
 
 
 class CategoryTests(TestCase):
-
     def setUp(self):
-        self.user = User(id=1, username='zoo', password='testpwsd123')
+        self.user = User(id=1, username="zoo", password="testpwsd123")
         self.user.save()
-        self.user_2 = User(id=2, username='zoo2', password='testpwsd123')
+        self.user_2 = User(id=2, username="zoo2", password="testpwsd123")
         self.user_2.save()
-        self.category = Category(id=1, name='test')
+        self.category = Category(id=1, name="test")
         self.category.save()
-        self.category_2 = Category(id=2, name='test2')
+        self.category_2 = Category(id=2, name="test2")
         self.category_2.save()
 
     def tearDown(self):
@@ -322,53 +337,53 @@ class CategoryTests(TestCase):
         self.category.delete()
 
     def test_update_category(self):
-        self.category.name = 'test'
+        self.category.name = "test"
         self.category.save()
-        self.assertEquals(self.category.name, 'test')
+        self.assertEquals(self.category.name, "test")
 
     def test_get_category(self):
-        self.category.name = 'test'
+        self.category.name = "test"
         self.category.save()
         category = Category.objects.get(id=1)
-        self.assertEquals(category.name, 'test')
+        self.assertEquals(category.name, "test")
 
     def test_get_all_categories(self):
-        self.category.name = 'test'
-        self.category_2.name = 'test2'
+        self.category.name = "test"
+        self.category_2.name = "test2"
         self.category.save()
         self.category_2.save()
         categories = Category.objects.all()
         self.assertEquals(len(categories), 2)
 
     def test_get_all_categories_by_id(self):
-        self.category.name = 'test'
+        self.category.name = "test"
         self.category.save()
         categories = Category.objects.all()
         self.assertEquals(categories[0].id, 2)
 
     def test_get_all_categories_by_name(self):
-        self.category.name = 'test'
+        self.category.name = "test"
         self.category.save()
         categories = Category.objects.all()
-        self.assertEquals(categories[1].name, 'test')
+        self.assertEquals(categories[1].name, "test")
 
     def test_get_category_by_name(self):
-        self.category.name = 'test'
+        self.category.name = "test"
         self.category.save()
-        category = Category.objects.get(name='test')
-        self.assertEquals(category.name, 'test')
+        category = Category.objects.get(name="test")
+        self.assertEquals(category.name, "test")
 
     def test_get_category_by_id(self):
-        self.category.name = 'test'
+        self.category.name = "test"
         self.category.save()
         category = Category.objects.get(id=1)
-        self.assertEquals(category.name, 'test')
+        self.assertEquals(category.name, "test")
 
     def test_get_category_by_name_and_id(self):
-        self.category.name = 'test'
+        self.category.name = "test"
         self.category.save()
-        category = Category.objects.get(name='test', id=1)
-        self.assertEquals(category.name, 'test')
+        category = Category.objects.get(name="test", id=1)
+        self.assertEquals(category.name, "test")
 
 
 class SMSMessageTests(TestCase):
@@ -377,16 +392,18 @@ class SMSMessageTests(TestCase):
     """
 
     def setUp(self):
-        self.user = User(id=1, username='zoo', password='testpwsd123')
+        self.user = User(id=1, username="zoo", password="testpwsd123")
         self.user.save()
-        self.user_2 = User(id=2, username='zoo2', password='testpwsd123')
+        self.user_2 = User(id=2, username="zoo2", password="testpwsd123")
         self.user_2.save()
-        self.number = '+254712345678'
-        self.number_2 = '+254712345679'
-        self.message = 'test message'
+        self.number = "+254712345678"
+        self.number_2 = "+254712345679"
+        self.message = "test message"
         self.sms_message = SMSMessage(id=1, number=self.number, message=self.message)
         self.sms_message.save()
-        self.sms_message_2 = SMSMessage(id=2, number=self.number_2, message=self.message)
+        self.sms_message_2 = SMSMessage(
+            id=2, number=self.number_2, message=self.message
+        )
         self.sms_message_2.save()
 
     def tearDown(self):
@@ -408,26 +425,26 @@ class SMSMessageTests(TestCase):
         self.sms_message.delete()
 
     def test_update_sms_message(self):
-        self.sms_message.message = 'sample message'
+        self.sms_message.message = "sample message"
         self.sms_message.save()
-        self.assertEquals(self.sms_message.message, 'sample message')
+        self.assertEquals(self.sms_message.message, "sample message")
 
     def test_get_sms_message(self):
-        self.sms_message.message = 'sample message'
+        self.sms_message.message = "sample message"
         self.sms_message.save()
         sms_message = SMSMessage.objects.get(id=1)
-        self.assertEquals(sms_message.message, 'sample message')
+        self.assertEquals(sms_message.message, "sample message")
 
     def test_get_all_sms_messages(self):
-        self.sms_message.message = 'sample message'
-        self.sms_message_2.message = 'sample main message'
+        self.sms_message.message = "sample message"
+        self.sms_message_2.message = "sample main message"
         self.sms_message.save()
         self.sms_message_2.save()
         sms_messages = SMSMessage.objects.all()
         self.assertEquals(len(sms_messages), 2)
 
     def test_get_all_sms_messages_by_id(self):
-        self.sms_message.message = 'sample message'
+        self.sms_message.message = "sample message"
         self.sms_message.save()
         sms_messages = SMSMessage.objects.all()
         self.assertEquals(sms_messages[0].id, 2)
@@ -439,20 +456,30 @@ class UserReviewTests(TestCase):
     """
 
     def setUp(self):
-        self.user = User(id=41, username='zoo', password='testpwsd123')
+        self.user = User(id=41, username="zoo", password="testpwsd123")
         self.user.save()
-        self.user_profile = UserProfile(user=self.user, username='zoo', location='Kisumu, KE',
-                                        contact_phone='0712345678', contact_email='zoo@test.com')
+        self.user_profile = UserProfile(
+            user=self.user,
+            username="zoo",
+            location="Kisumu, KE",
+            contact_phone="0712345678",
+            contact_email="zoo@test.com",
+        )
         # self.user_profile.save()
-        self.user_2 = User(13, username='zoo2', password='testpwsd123')
+        self.user_2 = User(13, username="zoo2", password="testpwsd123")
         self.user_2.save()
-        self.user_profile_2 = UserProfile(id=22, user=self.user_2, username='zoo2', location='Meru, KE',
-                                          contact_phone='0712345678',
-                                          contact_email='zoo2@test.com')
+        self.user_profile_2 = UserProfile(
+            id=22,
+            user=self.user_2,
+            username="zoo2",
+            location="Meru, KE",
+            contact_phone="0712345678",
+            contact_email="zoo2@test.com",
+        )
         # self.user_profile_2.save()
-        self.review = UserReview(id=1, review='test review')
+        self.review = UserReview(id=1, review="test review")
         self.review.save()
-        self.review_2 = UserReview(id=2, review='test review 2')
+        self.review_2 = UserReview(id=2, review="test review 2")
         self.review_2.save()
 
     def tearDown(self):
@@ -471,26 +498,26 @@ class UserReviewTests(TestCase):
         self.review.delete()
 
     def test_update_review(self):
-        self.review.review = 'sample review'
+        self.review.review = "sample review"
         self.review.save()
-        self.assertEquals(self.review.review, 'sample review')
+        self.assertEquals(self.review.review, "sample review")
 
     def test_get_review(self):
-        self.review.review = 'sample review'
+        self.review.review = "sample review"
         self.review.save()
         review = UserReview.objects.get(id=1)
-        self.assertEquals(review.review, 'sample review')
+        self.assertEquals(review.review, "sample review")
 
     def test_get_all_reviews(self):
-        self.review.review = 'sample review'
-        self.review_2.review = 'sample main review'
+        self.review.review = "sample review"
+        self.review_2.review = "sample main review"
         self.review.save()
         self.review_2.save()
         reviews = UserReview.objects.all()
         self.assertEquals(len(reviews), 2)
 
     def test_get_all_reviews_by_id(self):
-        self.review.review = 'sample review'
+        self.review.review = "sample review"
         self.review.save()
         reviews = UserReview.objects.all()
         self.assertEquals(reviews[0].id, 2)

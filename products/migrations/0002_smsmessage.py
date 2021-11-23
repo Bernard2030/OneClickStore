@@ -7,18 +7,34 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0001_initial'),
+        ("products", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SMSMessage',
+            name="SMSMessage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('number', models.CharField(blank=True, max_length=13)),
-                ('date', models.DateTimeField(auto_now_add=True)),
-                ('message', models.TextField(blank=True)),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='sms_messages', to='products.userprofile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("number", models.CharField(blank=True, max_length=13)),
+                ("date", models.DateTimeField(auto_now_add=True)),
+                ("message", models.TextField(blank=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sms_messages",
+                        to="products.userprofile",
+                    ),
+                ),
             ],
         ),
     ]
