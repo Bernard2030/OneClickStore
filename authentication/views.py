@@ -3,7 +3,12 @@ from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import ChangePasswordSerializer, MyTokenObtainPairSerializer, RegisterSerializer, UpdateUserSerializer
+from .serializers import (
+    ChangePasswordSerializer,
+    MyTokenObtainPairSerializer,
+    RegisterSerializer,
+    UpdateUserSerializer,
+)
 from products.serializers import SMSMessageSerializer, EmailMessageSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -28,19 +33,17 @@ def send_email(email, subject, message):
     # send email
     try:
         message = Mail(
-            from_email=os.environ.get('EMAIL_HOST_USER'),
+            from_email=os.environ.get("EMAIL_HOST_USER"),
             to_emails=email,
             subject=subject,
-            html_content=message)
-    try:
-        
-        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+            html_content=message,
+        )
+        sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
         response = sg.send(message)
-
         print(response.status_code)
         print(response.body)
         print(response.headers)
-        # return True
+        return True
     except Exception as e:
         print(e.body)
         return False, e
@@ -52,27 +55,32 @@ class SendEmailMessageView(APIView):
     serializer_class = EmailMessageSerializer
 
     def post(self, request):
-        email = request.data['email']
-        subject = request.data['subject']
-        message = request.data['message']
+        email = request.data["email"]
+        subject = request.data["subject"]
+        message = request.data["message"]
         print(send_email(email, subject, message))
         if send_email(email, subject, message):
             try:
                 EmailMessage.objects.create(
-                    email=email,
-                    subject=subject,
-                    message=message
+                    email=email, subject=subject, message=message
                 )
-                print(Response({'message': 'Email saved successfully'}, status=status.HTTP_200_OK))
+                print(
+                    Response(
+                        {"message": "Email saved successfully"},
+                        status=status.HTTP_200_OK,
+                    )
+                )
             except Exception as e:
                 print(e)
-                return Response({"message": "Email not sent"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"message": "Email not sent"}, status=status.HTTP_400_BAD_REQUEST
+                )
             return Response({"message": "Email sent"}, status=status.HTTP_200_OK)
-        return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
 
 
-at_username = os.environ.get('AT_USERNAME')
-at_api_key = os.environ.get('AT_API_KEY')
+at_username = os.environ.get("AT_USERNAME")
+at_api_key = os.environ.get("AT_API_KEY")
 
 africastalking.initialize(at_username, at_api_key)
 
@@ -94,7 +102,7 @@ def send_sms(phone_number, message):
                     number=phone_number,
                     message=message,
                 )
-                return 'message saved'
+                return "message saved"
             except Exception as e:
                 print(e)
             return True
@@ -129,13 +137,11 @@ class SendMessageView(APIView):
             - code: 400
               message: Message not sent
         """
-        phone_number = request.data['phone_number']
-        message = request.data['message']
+        phone_number = request.data["phone_number"]
+        message = request.data["message"]
         if send_sms(phone_number, message):
-            return Response({'success': True}, status=status.HTTP_200_OK)
-        return Response({'success': False}, status=status.HTTP_400_BAD_REQUEST)
-
-
+            return Response({"success": True}, status=status.HTTP_200_OK)
+        return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MyObtainTokenPairView(TokenObtainPairView):
@@ -167,7 +173,7 @@ class LogoutView(APIView):
 
     def post(self, request):
         try:
-            refresh_token = request.data['refresh_token']
+            refresh_token = request.data["refresh_token"]
             token = RefreshToken(refresh_token)
             token.blacklist()
 

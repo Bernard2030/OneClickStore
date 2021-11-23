@@ -8,21 +8,23 @@ from django_prometheus.models import ExportModelOperationsMixin
 from sendgrid.helpers.mail import subject
 
 
-class Category(ExportModelOperationsMixin('category'), models.Model):
+class Category(ExportModelOperationsMixin("category"), models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.name
 
 
-class Product(ExportModelOperationsMixin('product'), models.Model):
+class Product(ExportModelOperationsMixin("product"), models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     # image = models.ImageField(null=True, blank=True)
-    image = CloudinaryField('image', null=True, blank=True)
+    image = CloudinaryField("image", null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(
+        "Category", on_delete=models.CASCADE, null=True, blank=True
+    )
 
     def __str__(self):
         return self.name
@@ -43,17 +45,22 @@ class Product(ExportModelOperationsMixin('product'), models.Model):
         return cls.image.url
 
 
-class UserProfile(ExportModelOperationsMixin('user_profile'), models.Model):
+class UserProfile(ExportModelOperationsMixin("user_profile"), models.Model):
     """
     User Profile model
     """
-    user = models.OneToOneField(User, related_name="userprofile", on_delete=models.CASCADE)
+
+    user = models.OneToOneField(
+        User, related_name="userprofile", on_delete=models.CASCADE
+    )
     username = models.CharField(max_length=50, blank=True, null=True)
     location = models.CharField(max_length=30, blank=True, default="Nairobi, KE")
     date_joined = models.DateField(auto_now_add=True, blank=True)
     # profile_pic = models.ImageField(upload_to='profile_pics', blank=True, null=True default='profile_pics/default.jpg')
-    profile_pic = CloudinaryField('image',
-                                  default="https://res.cloudinary.com/dd5ab8mp3/image/upload/v1634660213/image/upload/v1/images/profile/user.jpg")
+    profile_pic = CloudinaryField(
+        "image",
+        default="https://res.cloudinary.com/dd5ab8mp3/image/upload/v1634660213/image/upload/v1/images/profile/user.jpg",
+    )
     contact_email = models.EmailField(max_length=100, blank=True)
     contact_phone = models.CharField(max_length=11, blank=True)
     products = models.ManyToManyField(Product, blank=True)
@@ -68,7 +75,7 @@ class UserProfile(ExportModelOperationsMixin('user_profile'), models.Model):
         instance.userprofile.save()
 
     def __str__(self):
-        return f'{self.user.username}: profile'
+        return f"{self.user.username}: profile"
 
     def get_absolute_url(self):
         return "/profile/{}".format(self.id)
@@ -119,23 +126,26 @@ class UserProfile(ExportModelOperationsMixin('user_profile'), models.Model):
         return UserProfile.objects.count()
 
 
-class UserRating(ExportModelOperationsMixin('user_rating'), models.Model):
+class UserRating(ExportModelOperationsMixin("user_rating"), models.Model):
     """
     Project Rating model
     """
+
     rating = ()
     for x in enumerate(range(1, 6)):
-        rating_tuple = (x[1], f'{x[1]}')
+        rating_tuple = (x[1], f"{x[1]}")
         rating += (rating_tuple,)
 
     # print(rating)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_ratings", null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="user_ratings", null=True
+    )
     date = models.DateTimeField(auto_now_add=True, blank=True)
     rating = models.FloatField(choices=rating, default=0, blank=True)
     total_rating = models.FloatField(default=0, blank=True)
 
     def __str__(self):
-        return f'{self.user}: rating'
+        return f"{self.user}: rating"
 
     def get_absolute_url(self):
         return "/profile/{}".format(self.id)
@@ -153,16 +163,19 @@ class UserRating(ExportModelOperationsMixin('user_rating'), models.Model):
         return self.date
 
 
-class UserReview(ExportModelOperationsMixin('user_review'), models.Model):
+class UserReview(ExportModelOperationsMixin("user_review"), models.Model):
     """
     Project Review model
     """
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="user_reviews", null=True)
+
+    user = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name="user_reviews", null=True
+    )
     date = models.DateTimeField(auto_now_add=True, blank=True)
     review = models.TextField(blank=True)
 
     def __str__(self):
-        return f'{self.user.user.username}: review'
+        return f"{self.user.user.username}: review"
 
     def get_absolute_url(self):
         return "/profile/{}".format(self.id)
@@ -180,19 +193,28 @@ class UserReview(ExportModelOperationsMixin('user_review'), models.Model):
         return self.date
 
 
-class ProductSale(ExportModelOperationsMixin('product_sales'), models.Model):
+class ProductSale(ExportModelOperationsMixin("product_sales"), models.Model):
     """
     Product Sale model
     """
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_sales", null=True)
-    buyer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="buyer_sales", null=True)
-    seller = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="seller_sales", null=True)
+
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="product_sales", null=True
+    )
+    buyer = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name="buyer_sales", null=True
+    )
+    seller = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name="seller_sales", null=True
+    )
     date_sold = models.DateTimeField(auto_now_add=True, blank=True)
     quantity = models.IntegerField(default=0, blank=True)
-    sale_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+    sale_price = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0, blank=True
+    )
 
     def __str__(self):
-        return f'{self.product.name}: sale'
+        return f"{self.product.name}: sale"
 
     def get_absolute_url(self):
         return "/products/{}".format(self.id)
@@ -213,17 +235,20 @@ class ProductSale(ExportModelOperationsMixin('product_sales'), models.Model):
         return self.sale_price
 
 
-class SMSMessage(ExportModelOperationsMixin('sms_message'), models.Model):
+class SMSMessage(ExportModelOperationsMixin("sms_message"), models.Model):
     """
     SMS Message model
     """
+
     number = models.CharField(max_length=13, blank=True)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="sms_messages", null=True)
+    user = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name="sms_messages", null=True
+    )
     date = models.DateTimeField(auto_now_add=True, blank=True)
     message = models.TextField(blank=True)
 
     def __str__(self):
-        return f'{self.user.user.username}: message'
+        return f"{self.user.user.username}: message"
 
     def get_absolute_url(self):
         return "/message/{}".format(self.id)
@@ -241,18 +266,21 @@ class SMSMessage(ExportModelOperationsMixin('sms_message'), models.Model):
         return self.date
 
 
-class EmailMessage(ExportModelOperationsMixin('email_message'), models.Model):
+class EmailMessage(ExportModelOperationsMixin("email_message"), models.Model):
     """
     Email Message model
     """
+
     email = models.EmailField(blank=True)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="email_messages", null=True)
+    user = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name="email_messages", null=True
+    )
     date = models.DateTimeField(auto_now_add=True, blank=True)
     message = models.TextField(blank=True)
     subject = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return f'{self.user.user.username}: message'
+        return f"{self.user.user.username}: message"
 
     def get_absolute_url(self):
         return "/message/{}".format(self.id)
