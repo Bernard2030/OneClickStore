@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from .models import Product, ProductSale, UserProfile, UserRating, User, UserReview, Category
+from .models import Product, ProductSale, UserProfile, UserRating, User, UserReview, Category, SMSMessage, EmailMessage
 import os
 from dotenv import load_dotenv
 
@@ -19,7 +19,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'price', 'image','category', 'date_added', 'category_name')
+        fields = ('id', 'name', 'description', 'price', 'image', 'category', 'date_added', 'category_name')
         read_only_fields = ('id', 'date_added')
 
     def get_image_url(self, obj):
@@ -63,7 +63,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ( 'user', 'profile_pic', 'location', 'products', 'date_joined')
+        fields = ('user', 'profile_pic', 'location', 'products', 'date_joined')
         read_only_fields = (),
 
     def get_user_image_url(self, obj):
@@ -78,7 +78,7 @@ class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserRating
         fields = ('user', 'rating')
-        read_only_fields = ( 'user', 'rating')
+        read_only_fields = ('user', 'rating')
 
 
 class ReviewSerializer(serializers.ModelSerializer, LoginRequiredMixin):
@@ -90,8 +90,8 @@ class ReviewSerializer(serializers.ModelSerializer, LoginRequiredMixin):
 
     class Meta:
         model = UserReview
-        fields = ('id', 'user', 'username','review')
-        read_only_fields = ('id', )
+        fields = ('id', 'user', 'username', 'review')
+        read_only_fields = ('id',)
 
     def get_username(self, obj):
         return obj.user.username
@@ -120,3 +120,24 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'product')
         read_only_fields = ('id', 'product')
 
+
+class SMSMessageSerializer(serializers.ModelSerializer):
+    """
+    Serializer for SMSMessage model
+    """
+
+    class Meta:
+        model = SMSMessage
+        fields = ('id', 'phone_number', 'message')
+        read_only_fields = ('id', 'phone_number', 'message')
+
+
+class EmailMessageSerializer(serializers.ModelSerializer):
+    """
+    Serializer for EmailMessage model
+    """
+
+    class Meta:
+        model = EmailMessage
+        fields = ('id', 'email', 'message')
+        read_only_fields = ('id', 'email', 'message')
