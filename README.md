@@ -23,8 +23,42 @@ the website.
 * A user can post bids on a product.
 * A user can view the bids on a product.
 
+# Architecture Overview 
+The API serves a backend to the Ecommerce found [here](https://github.com/indomitable-core/E-commerce). The frontend is built 
+in Angular and the backend is built in Django. 
+
+Overview of the architecture: 
+
+![Architecture](media/Architure.drawio.png)
+
+Overview of the devops and dashboard implementation: 
+
+![Architecture](media/devops.drawio.png)
+
 ## API Endpoints
-   You should create an API so that users and the frontend can access data from your application. 
+   You should create an API so that users and the frontend can access data from your application.:
+
+    - `/api/products`
+    - `/api/products/<product_id>`
+    - `/api/login`
+    - `/api/register`
+    - `/api/refresh-token` 
+    - `/api/users/<user_id>`
+    - `/api/users/<user_id>/products`
+    - `/api/users/<user_id>/products/<product_id>`
+
+# Link to Deployed application
+
+[![Deployed Application](https://img.shields.io/badge/Deployed-Application-green.svg)](https://backend-store-api.herokuapp.com/api/)
+
+Check live API --> [Here](https://backend-store-api.herokuapp.com/api/)
+
+## Documentation on the API
+
+[![Documentation](https://img.shields.io/badge/Documentation-API-blue.svg)](https://backend-store-api.herokuapp.com/api-docs/)
+
+View docs [Here](https://backend-store-api.herokuapp.com/api-docs/)
+
 
 # Setup Instructions / Installation
 
