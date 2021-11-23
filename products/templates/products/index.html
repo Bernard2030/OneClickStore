@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+
 <html lang="en">
+{% load bootstrap5 %}
 <head>
 
     <title> home page</title></head>
@@ -11,7 +12,11 @@
             </div>
             <div>
                 <a href="/api/products" class="btn btn-primary">All Product</a>
+                <br />
+                <br />
+                <a href="{% url 'api-docs' %}" class="btn btn-primary">Api dashboard</a>
             </div>
+
         </div>
     </div>
 </body>
