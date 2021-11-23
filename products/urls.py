@@ -14,7 +14,6 @@ router.register(r'users', views.UserViewSet)
 router.register(r'product-sales', views.ProductSaleViewSet)
 router.register(r'categories', views.CategoryViewSet)
 router.register(r'reviews', views.ReviewViewSet)
-# router.register(r'search-products', views.ProductSearchView)
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -25,10 +24,8 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # path('api/products-all/', views.ProductListView.as_view(), name='product-list'),
-    # path('logout/', views.LogoutView.as_view(), {"next_page": '/'}),
     path('api-token-auth/', obtain_auth_token),
-    # path('<int:pk>/', views.ProductDetail.as_view(), name='product-detail'),
-    # path('<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),
+
 
 ]
 
