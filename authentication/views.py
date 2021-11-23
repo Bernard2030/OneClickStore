@@ -46,7 +46,7 @@ def send_email(email, subject, message):
         return True
     except Exception as e:
         print(e.body)
-        return False, e
+        return False, e.body
 
 
 class SendEmailMessageView(APIView):
@@ -59,7 +59,7 @@ class SendEmailMessageView(APIView):
         subject = request.data["subject"]
         message = request.data["message"]
         print(send_email(email, subject, message))
-        if send_email(email, subject, message):
+        if send_email(email, subject, message)==True:
             try:
                 EmailMessage.objects.create(
                     email=email, subject=subject, message=message
@@ -73,10 +73,10 @@ class SendEmailMessageView(APIView):
             except Exception as e:
                 print(e)
                 return Response(
-                    {"message": "Email not sent"}, status=status.HTTP_400_BAD_REQUEST
+                    {"message": "Email not sent", "error": e}, status=status.HTTP_400_BAD_REQUEST
                 )
             return Response({"message": "Email sent"}, status=status.HTTP_200_OK)
-        return Response({"success": False}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"success": False, "errors":str(send_email(email, subject, message)[1])}, status=status.HTTP_400_BAD_REQUEST)
 
 
 at_username = os.environ.get("AT_USERNAME")
