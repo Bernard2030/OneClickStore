@@ -13,7 +13,7 @@ defusedxml==0.7.1
 dj-database-url==0.5.0
 dj-rest-auth==2.1.11
 dj-stripe==2.5.1
-Django==3.2.9
+Django==3.2.10
 django-allauth==0.45.0
 django-bootstrap-v5==1.0.7
 django-cors-headers==3.10.0
