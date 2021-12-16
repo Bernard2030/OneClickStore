@@ -1,0 +1,11 @@
+ https://backend-store-api.herokuapp.com/api-docs/ - Online store Api Documentation
+
+https://github.com/Bernard2030/OneClickStore/actions - Github link to view actions workflow.
+
+ https://metabase-oneclick.herokuapp.com/public/dashboard/
+ f3a43bce-dd4d-49c7-a0a1-20dd2b34f009 - Oneclick Store Dashboard
+
+ https://prometheus-metrics.herokuapp.com/graph?g0.range_input=1h&g0.expr=django_http_requests_total_by_method_total&g0.tab=0 - Prometheus Metrics endpoint
+
+https://snapshot.raintank.io/dashboard/snapshot/16rY3bunNPrnO6GwjIie7SO3CXHfyoKa?orgId=2 - Grafana Dashboard snapshot
+

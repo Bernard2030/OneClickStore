@@ -102,13 +102,13 @@ View docs [Here](https://backend-store-api.herokuapp.com/api-docs/)
   3a. Create a virtualenv
 
    ```
-       pyenv virtualenv zoo_awwards
+       pyenv virtualenv OneClickStore
    ```
 
   3b. Activate the virtualenv
 
    ```
-   pyenv activate zoo_awwards
+   pyenv activate OneClickStore
    ```
 
 4. Create a `.env` file and add your credentials
