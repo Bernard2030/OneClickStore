@@ -1,6 +1,6 @@
 # One Click Store Backend
 
-[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/) 
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
 [![OnlineStore Django Application](https://github.com/Bernard2030/OneClickStore/actions/workflows/django-online-store.yml/badge.svg)](https://github.com/Bernard2030/OneClickStore/actions/workflows/django-online-store.yml)
 
@@ -14,7 +14,8 @@ in time.
 It will also create an avenue for users to also sell their items which they no longer need through
 the website.
 
-## User Stories 
+## User Stories
+
 * A user is able to sign up and set up their own profile
 * A user can search required products, and it should return product and its category.
 * A user should check out to the payment page and make payments.
@@ -25,19 +26,21 @@ the website.
 * A user can post bids on a product.
 * A user can view the bids on a product.
 
-# Architecture Overview 
-The API serves a backend to the Ecommerce found [here](https://github.com/indomitable-core/E-commerce). The frontend is built 
-in Angular and the backend is built in Django. 
+# Architecture Overview
 
-Overview of the architecture: 
+The API serves a backend to the Ecommerce found [here](https://github.com/indomitable-core/E-commerce). The frontend is built
+in Angular and the backend is built in Django.
+
+Overview of the architecture:
 
 ![Architecture](media/Architure.drawio.png)
 
-Overview of the devops and dashboard implementation: 
+Overview of the devops and dashboard implementation:
 
 ![Architecture](media/devops.drawio.png)
 
 ## API Endpoints
+
    You should create an API so that users and the frontend can access data from your application.:
 
     - `/api/products`
@@ -61,14 +64,14 @@ Check live API --> [Here](https://backend-store-api.herokuapp.com/api/)
 
 View docs [Here](https://backend-store-api.herokuapp.com/api-docs/)
 
-
 # Setup Instructions / Installation
 
 ### Getting Started
 
 ### Prerequisites
 
-- Python and pip (I am currently using 3.9.7) Any version above 3.7 should work.
+* Python and pip (I am currently using 3.9.7) Any version above 3.7 should work.
+
 * Git installed on your machine
 * Code editor/ IDE
 * PostgreSQL installed on your machine
@@ -126,13 +129,15 @@ View docs [Here](https://backend-store-api.herokuapp.com/api-docs/)
     ```
 
 5. Add your credentials to the `.env` file
-    
+
     OR
+
    ```
    export DATABASE_URL=postgres://username:password@localhost:5432/database_name
    ```
 
 6. Migrate your database
+
     ```shell
     python manage.py migrate
     ```
@@ -172,8 +177,6 @@ View docs [Here](https://backend-store-api.herokuapp.com/api-docs/)
 
 ## API endpoints
 
-
-
 ## Technologies used
 
 * Python-3.9.7
@@ -183,7 +186,8 @@ View docs [Here](https://backend-store-api.herokuapp.com/api-docs/)
 * Heroku
 * Sendgrid
 
-## LICENSE 
+## LICENSE
+
 MIT License
 
 Copyright (c) 2021 Bernard Opiyo && Kennedy Ngugi Mwaura
