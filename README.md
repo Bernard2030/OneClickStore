@@ -1,6 +1,8 @@
 # One Click Store Backend
 
-[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/) 
+
+[![OnlineStore Django Application](https://github.com/Bernard2030/OneClickStore/actions/workflows/django-online-store.yml/badge.svg)](https://github.com/Bernard2030/OneClickStore/actions/workflows/django-online-store.yml)
 
 [![Docker Compose Actions Workflow](https://github.com/Bernard2030/OneClickStore/actions/workflows/online-store-docker.yml/badge.svg)](https://github.com/Bernard2030/OneClickStore/actions/workflows/online-store-docker.yml)
 
